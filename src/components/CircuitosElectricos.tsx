@@ -1,21 +1,22 @@
-import { useState } from 'react';
+// src/components/CircuitosElectricos.tsx
+import { useState } from "react";
 
 interface Component {
   id: string;
-  type: 'battery' | 'wire' | 'bulb';
+  type: "battery" | "wire" | "bulb";
   position: { x: number; y: number };
 }
 
-const CircuitosElectricos = () => {
+export default function CircuitosElectricos() {
   const [components, setComponents] = useState<Component[]>([]);
   const [isCircuitComplete, setIsCircuitComplete] = useState(false);
   const [showExplanation, setShowExplanation] = useState(false);
   const [draggedItem, setDraggedItem] = useState<string | null>(null);
 
   const availableComponents = [
-    { type: 'battery' as const, label: 'Pila', icon: '🔋', color: 'bg-yellow-400' },
-    { type: 'wire' as const, label: 'Cable', icon: '➖', color: 'bg-gray-600' },
-    { type: 'bulb' as const, label: 'Bombillo', icon: '💡', color: 'bg-orange-300' },
+    { type: "battery" as const, label: "Pila", icon: "🔋", color: "bg-yellow-400" },
+    { type: "wire" as const, label: "Cable", icon: "➖", color: "bg-gray-600" },
+    { type: "bulb" as const, label: "Bombillo", icon: "💡", color: "bg-orange-300" },
   ];
 
   const handleDragStart = (type: string) => {
@@ -32,13 +33,13 @@ const CircuitosElectricos = () => {
 
     const newComponent: Component = {
       id: `${draggedItem}-${Date.now()}`,
-      type: draggedItem as 'battery' | 'wire' | 'bulb',
+      type: draggedItem as "battery" | "wire" | "bulb",
       position: { x, y },
     };
 
-    setComponents([...components, newComponent]);
-    setDraggedItem(null);
-    checkCircuit([...components, newComponent]);
+    const updated = [...components, newComponent];
+    setComponents(updated);
+    checkCircuit(updated);
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -46,15 +47,13 @@ const CircuitosElectricos = () => {
   };
 
   const checkCircuit = (comps: Component[]) => {
-    const hasBattery = comps.some((c) => c.type === 'battery');
-    const hasWires = comps.filter((c) => c.type === 'wire').length >= 2;
-    const hasBulb = comps.some((c) => c.type === 'bulb');
+    const hasBattery = comps.some((c) => c.type === "battery");
+    const hasWires = comps.filter((c) => c.type === "wire").length >= 2;
+    const hasBulb = comps.some((c) => c.type === "bulb");
 
     if (hasBattery && hasWires && hasBulb) {
       setIsCircuitComplete(true);
       setShowExplanation(true);
-      // Efecto de sonido simulado
-      console.log('🔊 ¡Circuito completado!');
     } else {
       setIsCircuitComplete(false);
       setShowExplanation(false);
@@ -77,9 +76,15 @@ const CircuitosElectricos = () => {
           Arrastra los componentes al área de trabajo para crear tu circuito
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div
+          data-testid="layout"
+          className="grid grid-cols-1 md:grid-cols-4 gap-6"
+        >
           {/* Panel de componentes */}
-          <div className="md:col-span-1 bg-white rounded-lg shadow-lg p-6">
+          <div
+            data-testid="panel-componentes"
+            className="md:col-span-1 bg-white rounded-lg shadow-lg p-6"
+          >
             <h2 className="text-xl font-bold text-gray-800 mb-4">Componentes</h2>
             <div className="space-y-4">
               {availableComponents.map((comp) => (
@@ -98,6 +103,7 @@ const CircuitosElectricos = () => {
             </div>
 
             <button
+              data-testid="boton-reiniciar"
               onClick={handleReset}
               className="w-full mt-6 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-lg transition-colors"
             >
@@ -108,33 +114,16 @@ const CircuitosElectricos = () => {
           {/* Área de trabajo */}
           <div className="md:col-span-3">
             <div
+              data-testid="area-trabajo"
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               className={`relative bg-white rounded-lg shadow-lg p-8 min-h-[500px] border-4 ${
-                isCircuitComplete ? 'border-green-500' : 'border-gray-300'
+                isCircuitComplete ? "border-green-500" : "border-gray-300"
               } border-dashed transition-colors`}
             >
               <h3 className="text-lg font-semibold text-gray-700 mb-4">
                 Área de Trabajo
               </h3>
-
-              {components.map((comp) => (
-                <div
-                  key={comp.id}
-                  className="absolute transform -translate-x-1/2 -translate-y-1/2"
-                  style={{ left: comp.position.x, top: comp.position.y }}
-                >
-                  <div
-                    className={`text-4xl ${
-                      isCircuitComplete ? 'animate-pulse' : ''
-                    }`}
-                  >
-                    {comp.type === 'battery' && '🔋'}
-                    {comp.type === 'wire' && '➖'}
-                    {comp.type === 'bulb' && (isCircuitComplete ? '💡' : '⚪')}
-                  </div>
-                </div>
-              ))}
 
               {components.length === 0 && (
                 <div className="flex items-center justify-center h-full text-gray-400 text-xl">
@@ -149,9 +138,11 @@ const CircuitosElectricos = () => {
               )}
             </div>
 
-            {/* Explicación */}
             {showExplanation && (
-              <div className="mt-6 bg-green-50 border-2 border-green-500 rounded-lg p-6 shadow-lg">
+              <div
+                data-testid="explicacion"
+                className="mt-6 bg-green-50 border-2 border-green-500 rounded-lg p-6 shadow-lg"
+              >
                 <h3 className="text-2xl font-bold text-green-800 mb-3">
                   🎉 ¡Excelente trabajo!
                 </h3>
@@ -159,8 +150,7 @@ const CircuitosElectricos = () => {
                   Has creado un <strong>circuito eléctrico simple</strong>. La energía
                   fluye desde la pila (fuente de energía), pasa por los cables
                   (conductores) y llega al bombillo, que se enciende al recibir la
-                  corriente eléctrica. Para que un circuito funcione, debe formar un
-                  camino cerrado que permita el flujo continuo de electricidad.
+                  corriente eléctrica.
                 </p>
               </div>
             )}
@@ -169,6 +159,4 @@ const CircuitosElectricos = () => {
       </div>
     </div>
   );
-};
-
-export default CircuitosElectricos;
+}
