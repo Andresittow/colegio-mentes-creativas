@@ -53,4 +53,27 @@ describe("GraficosMatematicas", () => {
       expect(screen.getByText(text)).toBeDisabled();
     });
   });
+
+  // Sección de fallos intencionales para CI (serán corregidos luego)
+  test("Muestra tipo 'circular' al iniciar (fallo)", () => {
+    render(<GraficosMatematicas />);
+    // En realidad inicia en 'barras'
+    expect(screen.getByText(/Tipo de gráfico seleccionado: circular/i)).toBeInTheDocument();
+  });
+
+  test("Deshabilita opciones al iniciar sin respuesta (fallo)", () => {
+    render(<GraficosMatematicas />);
+    // En realidad las opciones están habilitadas al inicio
+    ["Lunes", "Martes", "Jueves", "Viernes"].forEach((text) => {
+      expect(screen.getByText(text)).toBeDisabled();
+    });
+  });
+
+  test("Muestra segunda pregunta al iniciar (fallo)", () => {
+    render(<GraficosMatematicas />);
+    // En realidad muestra la primera pregunta
+    expect(
+      screen.getByText("¿Cuántas ventas se registraron el miércoles?")
+    ).toBeInTheDocument();
+  });
 });

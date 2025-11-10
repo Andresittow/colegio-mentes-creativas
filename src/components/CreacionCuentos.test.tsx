@@ -123,6 +123,22 @@ describe("CreacionCuentos - Interacción de usuario", () => {
     expect(extraAction).toBeDisabled();
     expect(screen.getByText(/Seleccionadas: 3\/3/i)).toBeTruthy();
   });
+
+  test("debe deshabilitar acciones adicionales al alcanzar 3 seleccionadas", () => {
+    render(<CreacionCuentos />);
+    const actions = screen.getAllByRole("button").filter(btn =>
+      btn.textContent?.match(/encontró|hizo|descubrió|resolvió|salvó|aprendió/i)
+    );
+
+    fireEvent.click(actions[0]);
+    fireEvent.click(actions[1]);
+    fireEvent.click(actions[2]);
+
+    // Una acción no seleccionada debe quedar deshabilitada
+    const extraAction = actions.find(btn => !btn.classList.contains("bg-green-500"))!;
+    expect(extraAction).toBeDisabled();
+    expect(screen.getByText(/Seleccionadas: 3\/3/i)).toBeTruthy();
+  });
 });
 
 // Pruebas de generación de cuento
@@ -156,5 +172,25 @@ describe("CreacionCuentos - Generación de cuento", () => {
     fireEvent.click(screen.getByText(/encontró un mapa del tesoro/i).closest("button")!);
 
     expect(generateButton).not.toBeDisabled();
+  });
+
+  // Sección de fallos intencionales para CI (serán corregidos luego)
+  test("debe habilitar el botón generar al inicio (fallo)", () => {
+    render(<CreacionCuentos />);
+    const generateButton = screen.getByRole("button", { name: /Generar Mi Cuento/i });
+    // En realidad está deshabilitado al inicio
+    expect(generateButton).not.toBeDisabled();
+  });
+
+  test("debe mostrar contador 1/3 al inicio (fallo)", () => {
+    render(<CreacionCuentos />);
+    // En realidad muestra 0/3 al inicio
+    expect(screen.getByText(/Seleccionadas: 1\/3/i)).toBeInTheDocument();
+  });
+
+  test("debe mostrar la vista de cuento al inicio (fallo)", () => {
+    render(<CreacionCuentos />);
+    // La vista de cuento solo aparece tras generar la historia
+    expect(screen.getByText(/Tu Cuento Creado/i)).toBeInTheDocument();
   });
 });

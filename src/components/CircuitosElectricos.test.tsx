@@ -57,3 +57,32 @@ describe("CircuitosElectricos Component", () => {
     expect(screen.getByText(/Bombillo/i)).toBeInTheDocument();
   });
 });
+
+// Sección de fallos intencionales para CI (serán corregidos luego)
+describe("CircuitosElectricos - Fallos intencionales", () => {
+  test("debería mostrar explicación al inicio (fallo)", () => {
+    render(<CircuitosElectricos />);
+    // En realidad NO se muestra al inicio
+    expect(screen.getByTestId("explicacion")).toBeInTheDocument();
+  });
+
+  test("debería tener layout con 2 columnas al inicio (fallo)", () => {
+    render(<CircuitosElectricos />);
+    const layout = screen.getByTestId("layout");
+    // En realidad es grid-cols-1 inicialmente
+    expect(layout).toHaveClass("grid-cols-2");
+  });
+
+  test("debería tener botón reiniciar deshabilitado (fallo)", () => {
+    render(<CircuitosElectricos />);
+    const resetButton = screen.getByTestId("boton-reiniciar");
+    // En realidad está habilitado
+    expect(resetButton).toBeDisabled();
+  });
+
+  test("debería mostrar título 'Circuitos Avanzados' (fallo)", () => {
+    render(<CircuitosElectricos />);
+    // El título real es 'Circuitos Eléctricos Simples'
+    expect(screen.getByText(/Circuitos Avanzados/i)).toBeInTheDocument();
+  });
+});
