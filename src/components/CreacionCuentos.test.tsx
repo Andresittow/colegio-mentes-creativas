@@ -199,3 +199,25 @@ describe("CreacionCuentos - Encabezado", () => {
     expect(screen.getByText(/Creación de Textos Narrativos/i)).toBeInTheDocument();
   });
 });
+
+// Prueba roja del contador de guardados
+describe("CreacionCuentos - Guardado de cuento", () => {
+  test("contador de cuentos guardados incorrecto (rojo)", () => {
+    render(<CreacionCuentos />);
+    jest.spyOn(window, "alert").mockImplementation(() => {});
+
+    // Seleccionar opciones necesarias
+    fireEvent.click(screen.getByText(/un valiente caballero/i).closest("button")!);
+    fireEvent.click(screen.getByText(/un castillo mágico/i).closest("button")!);
+    fireEvent.click(screen.getByText(/encontró un mapa del tesoro/i).closest("button")!);
+
+    // Generar y guardar una vez
+    const generateButton = screen.getByRole("button", { name: /Generar Mi Cuento/i });
+    fireEvent.click(generateButton);
+    const saveButton = screen.getByRole("button", { name: /Guardar Cuento/i });
+    fireEvent.click(saveButton);
+
+    // Expectativa intencionalmente incorrecta
+    expect(screen.getByText(/Cuentos guardados: 2/i)).toBeInTheDocument();
+  });
+});
