@@ -42,6 +42,27 @@ describe("GraficosMatematicas", () => {
     }, { timeout: 1500 });
   });
 
+  test("Reintentar restablece estado y vuelve a la primera pregunta", async () => {
+    render(<GraficosMatematicas />);
+    const firstAnswer = screen.getByText("Viernes");
+    await userEvent.click(firstAnswer);
+    await waitFor(() => {
+      expect(screen.getByText("¿Cuántas ventas se registraron el miércoles?"))
+        .toBeInTheDocument();
+    }, { timeout: 1500 });
+    const secondAnswer = screen.getByText("38");
+    await userEvent.click(secondAnswer);
+    await waitFor(() => {
+      expect(screen.getByText("¡Actividad Completada!"))
+        .toBeInTheDocument();
+    }, { timeout: 1500 });
+
+    await userEvent.click(screen.getByRole("button", { name: /Reintentar/i }));
+    expect(screen.getByText("¿Qué día se registraron más ventas?")).toBeInTheDocument();
+    expect(screen.getByTestId("progreso")).toHaveTextContent("Pregunta 1 de 2");
+    expect(screen.getByTestId("score")).toHaveTextContent("Puntaje actual: 0");
+  });
+
   test("Cambia el tipo de gráfico al seleccionar opción", async () => {
     render(<GraficosMatematicas />);
     expect(screen.getByText(/Tipo de gráfico seleccionado: barras/i)).toBeInTheDocument();
