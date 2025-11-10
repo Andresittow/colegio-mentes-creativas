@@ -3,6 +3,10 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import MultiplicationTable from "./MultiplicationTable";
 
 describe("MultiplicationTable", () => {
+  test("renderiza el encabezado principal", () => {
+    render(<MultiplicationTable />);
+    expect(screen.getByText(/Tablas de Multiplicar/i)).toBeInTheDocument();
+  });
   test("muestra la tabla de multiplicar cuando se genera", () => {
     // 1. Renderizar el componente
     render(<MultiplicationTable />);
