@@ -191,3 +191,12 @@ describe("CreacionCuentos - Generación de cuento", () => {
     expect(screen.queryByText(/Tu Cuento Creado/i)).not.toBeInTheDocument();
   });
 });
+
+// Sección de fallos intencionales para CI (serán corregidos luego)
+describe("CreacionCuentos - Fallos intencionales", () => {
+  test("encabezado mal formulado (rojo)", () => {
+    render(<CreacionCuentos />);
+    // Espera un encabezado incorrecto deliberadamente
+    expect(screen.getByText(/Creación de Cuentos/i)).toBeInTheDocument();
+  });
+});
