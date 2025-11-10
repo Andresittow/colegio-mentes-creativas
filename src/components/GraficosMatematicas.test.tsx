@@ -34,4 +34,23 @@ describe("GraficosMatematicas", () => {
     await new Promise((r) => setTimeout(r, 1100));
     expect(screen.getByText("¡Actividad Completada!")).toBeInTheDocument();
   });
+
+  test("Cambia el tipo de gráfico al seleccionar opción", async () => {
+    render(<GraficosMatematicas />);
+    expect(screen.getByText(/Tipo de gráfico seleccionado: barras/i)).toBeInTheDocument();
+    await userEvent.click(screen.getByText("Líneas"));
+    expect(screen.getByText(/Tipo de gráfico seleccionado: líneas/i)).toBeInTheDocument();
+    await userEvent.click(screen.getByText("Circular"));
+    expect(screen.getByText(/Tipo de gráfico seleccionado: circular/i)).toBeInTheDocument();
+  });
+
+  test("Deshabilita opciones tras seleccionar una respuesta", async () => {
+    render(<GraficosMatematicas />);
+    const option = screen.getByText("Viernes");
+    await userEvent.click(option);
+    const allOptions = ["Lunes", "Martes", "Jueves", "Viernes"]; 
+    allOptions.forEach((text) => {
+      expect(screen.getByText(text)).toBeDisabled();
+    });
+  });
 });
