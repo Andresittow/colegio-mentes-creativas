@@ -107,6 +107,22 @@ describe("CreacionCuentos - Interacción de usuario", () => {
 
     expect(screen.getByText(/Seleccionadas: 3\/3/i)).toBeTruthy();
   });
+
+  test("debe deshabilitar acciones adicionales al alcanzar 3 seleccionadas", () => {
+    render(<CreacionCuentos />);
+    const actions = screen.getAllByRole("button").filter(btn =>
+      btn.textContent?.match(/encontró|hizo|descubrió|resolvió|salvó|aprendió/i)
+    );
+
+    fireEvent.click(actions[0]);
+    fireEvent.click(actions[1]);
+    fireEvent.click(actions[2]);
+
+    // Una acción no seleccionada debe quedar deshabilitada
+    const extraAction = actions.find(btn => !btn.classList.contains("bg-green-500"))!;
+    expect(extraAction).toBeDisabled();
+    expect(screen.getByText(/Seleccionadas: 3\/3/i)).toBeTruthy();
+  });
 });
 
 // Pruebas de generación de cuento
