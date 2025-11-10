@@ -224,7 +224,7 @@ describe("CreacionCuentos - Guardado de cuento", () => {
 
 // Prueba roja: tras crear nuevo cuento, no debe resetear guardados (expectativa incorrecta)
 describe("CreacionCuentos - Reinicio", () => {
-  test("contador se reinicia tras crear nuevo (rojo)", () => {
+  test("no muestra contador tras crear nuevo", () => {
     render(<CreacionCuentos />);
     jest.spyOn(window, "alert").mockImplementation(() => {});
 
@@ -238,7 +238,7 @@ describe("CreacionCuentos - Reinicio", () => {
     // Reiniciar para crear nuevo cuento
     fireEvent.click(screen.getByRole("button", { name: /Crear Nuevo Cuento/i }));
 
-    // Expectativa incorrecta intencional: debería seguir mostrando 1, pero esperamos 0
-    expect(screen.getByText(/Cuentos guardados: 0/i)).toBeInTheDocument();
+    // Tras reinicio, el contador no se muestra en la vista inicial
+    expect(screen.queryByText(/Cuentos guardados:/i)).not.toBeInTheDocument();
   });
 });
