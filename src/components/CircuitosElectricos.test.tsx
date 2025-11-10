@@ -47,4 +47,13 @@ describe("CircuitosElectricos Component", () => {
     const layout = screen.getByTestId("layout");
     expect(layout).toHaveClass("grid-cols-1");
   });
+
+  test("debe listar 3 componentes disponibles en el panel", () => {
+    const panel = screen.getByTestId("panel-componentes");
+    const draggables = panel.querySelectorAll('[draggable="true"]');
+    expect(draggables.length).toBe(3);
+    expect(screen.getByText(/Pila/i)).toBeInTheDocument();
+    expect(screen.getByText(/Cable/i)).toBeInTheDocument();
+    expect(screen.getByText(/Bombillo/i)).toBeInTheDocument();
+  });
 });
