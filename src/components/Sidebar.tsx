@@ -11,7 +11,7 @@ const mainItems = [
 export default function Sidebar() {
   return (
     <aside className="hidden md:block w-[260px] bg-gradient-to-b from-indigo-100 to-white p-4 shadow-lg border-r border-indigo-200">
-      <h2 className="text-2xl font-bold text-indigo-700 text-center mb-6">Menú Principal</h2>
+      <h2 className="text-2xl font-bold text-indigo-700 text-center mb-6">Menú de Aprendizaje</h2>
       <nav className="space-y-4">
         {mainItems.map((item) => (
           <NavLink
