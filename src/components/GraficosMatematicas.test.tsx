@@ -6,7 +6,7 @@ import GraficosMatematicas from "./GraficosMatematicas";
 describe("GraficosMatematicas", () => {
   test("Muestra la primera pregunta al iniciar", () => {
     render(<GraficosMatematicas />);
-    expect(screen.getByText("¿Qué día se registraron más ventas?")).toBeInTheDocument();
+    expect(screen.getByText("¿Cuántas ventas se registraron el miércoles?")).toBeInTheDocument();
   });
 
   test("Permite seleccionar una respuesta", async () => {
