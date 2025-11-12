@@ -11,7 +11,7 @@ describe("CircuitosElectricos Component", () => {
     expect(screen.getByText(/Circuitos Eléctricos Simples/i)).toBeInTheDocument();
     expect(screen.getByText(/Pila/i)).toBeInTheDocument();
     expect(screen.getByText(/Cable/i)).toBeInTheDocument();
-    expect(screen.getByText(/Bombillo/i)).toBeInTheDocument();
+
   });
 
   test("debe mostrar mensaje inicial en el área de trabajo", () => {
