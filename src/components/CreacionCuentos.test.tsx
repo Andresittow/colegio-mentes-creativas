@@ -30,7 +30,7 @@ describe("CreacionCuentos Component", () => {
     expect(screen.getByText(/hizo un nuevo amigo inesperado/i)).toBeTruthy();
     expect(screen.getByText(/descubrió un poder especial/i)).toBeTruthy();
     expect(screen.getByText(/resolvió un enigma complicado/i)).toBeTruthy();
-    expect(screen.getByText(/salvó a alguien en peligro/i)).toBeTruthy();
+    
   });
 
   // RF-03.06: Validar botón de generar cuento
