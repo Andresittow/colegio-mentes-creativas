@@ -138,7 +138,7 @@ Fin.`;
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-8">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold text-center text-amber-900 mb-2">
+        
           ✍️ Creación de Textos Narrativos
         </h1>
         <p className="text-center text-gray-700 mb-8">
